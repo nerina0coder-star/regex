@@ -1,57 +1,58 @@
-# Regexes
+<!-- Badges -->
+![Author Mail](https://img.shields.io/badge/Email-github.py.coder%40gmail.com.-red?logo=github)
+![Version](https://img.shields.io/Version-v0.0.1-red?logo=github)
+![License](https://img.shields.io/badge/License-MIT-red?logo=github)
+![regex size](https://img.shields.io/badge/size-45.5k--characters-orange)
 
-## Function Matcher
-### Quick Navigation
-- How many lists/dicts/sets/tuples you can put in another list/dict/set/tuple is [here](#fm-lsd).
-- How long the file with Single Quotes is [here](#fm-lcl)
-### What is it?
-- Function Matcher regex is a regex to find all regexes that look the same as a python function, but with double closing/opening Steep Brackets. This Matcher supports nested structures.
-### Example(SingleQuotes):
-- [[ calc() ]] - Correct
-- [[ calc(       ) ]] - Correct
-- [[ calc(name=' value ') ]] - Correct
-- [[ calc(name=911) ]] - Correct
-- [[ calc(name=True) ]] - Correct
-- [[ calc(name=')') ]] - Correct
-- [[ calc( , ) ]] - Incorrect (Syntax is wrong)
-- [[ calc(,) ]] - Incorrect (Syntax is wrong)
-- [[ calc('', ) ]] - Incorrect (Syntax is wrong)
-- [[ eval() ]] - Incorrect (Functions are filtered)
-### How to use:
-1. Get the file, or copy paste it into a file.
-2. To limit your own custom functions, use a script and call the replace method:
--  1 reader = open('my/file/path.anything', 'r')
--  2 writer = open('my/file/path.anything', 'w')
--  3 txt = reader.read()
--  4 writer.write(txt.replace('calc|find_(chambers|users|items)', 'myCustomFunctionsAsRegex'))
-### Engine:
-- Please never use this regex in any engine that is a NFA engine, such as python's built-in re library, as it can and will make catastrophic backtrackings. I recommend you the google-re2 if you ever want to use this.
-### Use Cases:
-- Letting users call functions from files in one regex call. Tho a safer approach is to use this + google-re2, ast or carefully planned lexers/parsers.
-### Last Supported Depth: 1 <a class="function_matcher" id='fm-lsd'></a>
-### Last Captured Length: 45552 <a class="function_matcher" id='fm-lcl'></a>
+# 1. Function Matcher Raw
+## 1. Quick Look
+1. from google.re2 import re   # recommended engine
+2. pattern = open("FunctionMatcher/DoubleQuotes.txt").read()
+3. result = re.findall(pattern, "[[ calc(name='embedded python code finder') ]]")
 
+## 2. What is it?
+A regex that parses Python‑like function calls inside double square brackets [[ ... ]] – supports nested structures, keyword arguments, and multiple string styles.
 
-### license
+## 3. Why would anyone use this?
 
-<strong>MIT License</strong>
+- Embedded DSLs in text files (configs, templates)
 
-Copyright (c) <strong>2026 nerina0coder-star</strong>
+- Lightweight function calling without a full parser
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+- Educational: extreme regex design
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 4. How it works
 
-<strong>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</strong>
+- Matches [[, then function name, then (, then arguments, then ), then ]]
+
+- Handles nested dicts, lists, tuples(depth 1)<a class='function_matcher' id='fm-lsd'></a>, and even function calls inside arguments (depth 1)
+
+- Three string modes: double, single, triple‑double quotes
+
+<div style='background-color: red; border-radius: 6;'>
+## 5. Critical Warning
+DO <strong>NOT</strong> USE WITH TRADITIONAL NFA ENGINES (Python re, PCRE, Perl).
+Use Google RE2 only – otherwise <strong>catastrophic backtracking</strong> will freeze your program.
+</div>
+
+## 6. How to install?
+1. Download the file and put it in e.g., ~/Desktop
+2. Learn re2 if you don't know it yet.
+3. Write code:
+- import re2
+- with open('/home/user/Desktop') as f:
+-     regex = f.read()
+- # Optional - change with your own pattern
+- regex = regex.replace('calc|find_(chambers|users|items)', 'calc|step|search') # Use safe functions, not os.exec or eval
+- pattern = re2.compile(regex)
+- match = pattern.search('[[ calc(calculation='sqrt(911)') ]]')
+## 7. What to avoid?
+Here is an example of what to avoid:
+- import re
+- with open('/home/user/Desktop') as f:
+-     regex = f.read()
+- pattern_dangerous = re.compile(regex)
+- GoodbyeMyAppILovedYou = pattern_dangerous.search('[[ calc(calculation='10 + 10) ]]') # Missed quote = crash.
+
+# 2. [Contributing](CONTRIBUTING.md)
+# 3. [License](LICENSE.md)
