@@ -2,7 +2,7 @@
 ![Author Mail](https://img.shields.io/badge/Email-github.py.coder%40gmail.com.-red?logo=github)
 ![Version](https://img.shields.io/badge/Version-v0.0.1-red?logo=github)
 ![License](https://img.shields.io/badge/License-MIT-red?logo=github)
-![regex size](https://img.shields.io/badge/size-45.5k--characters-orange)
+![regex size](https://img.shields.io/badge/size-454.38k--characters-orange)
 
 # 1. Function Matcher Raw
 ## 1. Quick Look
@@ -25,7 +25,7 @@ A regex that parses Python‑like function calls inside double square brackets [
 
 - Matches [[, then function name, then (, then arguments, then ), then ]]
 
-- Handles nested dicts, lists, tuples(depth 1)<a class='function_matcher' id='fm-lsd'></a>, and even function calls inside arguments (depth 1)
+- Handles nested dicts, lists, tuples(depth 2)<a class='function_matcher' id='fm-lsd'></a>, and even function calls inside arguments (depth 1)
 
 - Three string modes: double, single, triple‑double quotes
 
@@ -46,7 +46,10 @@ with open('/home/user/Desktop') as f:
 # Optional - change with your own pattern
 regex = regex.replace('calc|find_(chambers|users|items)', 'calc|step|search') # Use safe functions, not os.exec or eval
 pattern = re2.compile(regex)
-match = pattern.search('[[ calc(calculation='sqrt(911)') ]]')
+matches = pattern.search('[[ calc(calculation='sqrt(911)') ]]')
+matches = pattern.search('[[ # Hello! This is a comment! ]]')
+matches = pattern.search('[[ from os import exec ]]')
+matches = pattern.search('[[ import killer ]]')
 ```
 ## 7. What to avoid?
 Here is an example of what to avoid:
@@ -55,6 +58,7 @@ import re
 with open('/home/user/Desktop') as f:
      regex = f.read()
 pattern_dangerous = re.compile(regex)
+out = pattern_dangerous.search('import numpy as np') # 'as' is not supported!
 GoodbyeMyAppILovedYou = pattern_dangerous.search('[[ calc(calculation='10 + 10) ]]') # Missed quote = crash.
 ```
 # 2. [Contributing](CONTRIBUTING.md)
