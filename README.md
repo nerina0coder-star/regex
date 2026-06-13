@@ -3,8 +3,6 @@
 ![Version](https://img.shields.io/badge/Version-v0.0.1-red?logo=github)
 ![License](https://img.shields.io/badge/License-MIT-red?logo=github)
 ![regex size](https://img.shields.io/badge/size-454.38k--characters-orange)
-
-# 1. Function Matcher Raw
 ## 1. Quick Look
 1. from google.re2 import re   # recommended engine
 2. pattern = open("FunctionMatcher/DoubleQuotes.txt").read()
@@ -41,7 +39,7 @@ Use Google RE2 only – otherwise <strong>catastrophic backtracking</strong> wil
 3. Write code:
 ```python
 import re2
-with open('/home/user/Desktop') as f:
+with open('/home/user/Desktop/regexes/FunctionMatcher/SingleQuotes.txt') as f:
     regex = f.read()
 # Optional - change with your own pattern
 regex = regex.replace('calc|find_(chambers|users|items)', 'calc|step|search') # Use safe functions, not os.exec or eval
@@ -55,7 +53,7 @@ matches = pattern.search('[[ import killer ]]')
 Here is an example of what to avoid:
 ```python
 import re
-with open('/home/user/Desktop') as f:
+with open('/home/user/Desktop/regexes/FunctionMatcher/SingleQuotes.txt') as f:
      regex = f.read()
 pattern_dangerous = re.compile(regex)
 out = pattern_dangerous.search('import numpy as np') # 'as' is not supported!
